@@ -6,23 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'shop/style.css' %}" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" />
     <title>Document</title>
   </head>
   <body>
-    
     <div class="container">
-
       <div class="row">
         <div class="col-md-12">
-          <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">Navbar</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
@@ -32,22 +29,36 @@
                     <a class="nav-link" href="#">Link</a>
                   </li>
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Dropdown
-                    </a>
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</a>
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                      <li>
+                        <a class="dropdown-item" href="#">Action</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Another action</a>
+                      </li>
+                      <li>
+                        <hr class="dropdown-divider" />
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </li>
                     </ul>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link active" href="#">Cart</a>
+                    {% comment %} <a id="cart" class="nav-link active btn btn-primary cart-btn" href="#">
+                      <i class="bi bi-cart3 cart-icon"></i>
+                      <span>Cart</span><span id="id-cart" class="cart-label">(0)</span>
+                    </a> {% endcomment %}
+
+                    <button id="cart" data-bs-html="true" type="button" class="btn btn-primary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
+                      <i class="bi bi-cart3 cart-icon"></i>
+                      <span>Cart</span><span id="id-cart" class="cart-label">(0)</span>
+                    </button>
                   </li>
                 </ul>
                 <form class="d-flex" role="search">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                   <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
               </div>
@@ -56,14 +67,12 @@
         </div>
       </div>
 
-
       <div class="row">
         <div class="col-md-12">
           <form class="card card-sm">
             <div class="card-body row no-gutters align-items-center">
               <div class="col">
-                <input type="search" name="item_name" placeholder="Search for products..." 
-                class="form-control form-control-borderless" />
+                <input type="search" name="item_name" placeholder="Search for products..." class="form-control form-control-borderless" />
               </div>
               <div class="col-auto">
                 <button class="btn btn-success" type="submit">Search</button>
@@ -77,86 +86,111 @@
         {% for product in product_objects %}
           <div class="col-md-3">
             <div class="card">
-              <img src="{{ product.image }}" class="card-img-top" />
+              <a href="/{{ product.id }}"><img src="{{ product.image }}" class="card-img-top" /></a>
               <div class="card-body">
-                <div class="card-title">{{ product.title }}</div>
+                <div id="nm{{ product.id }}" class="card-title">{{ product.title }}</div>
                 <div class="card-text">{{ product.formatted_price }} L.E</div>
-                <a href="/{{product.id}}" class="btn btn-warning">View</a>
-                <button id="{{product.id}}" href="" class="btn atc btn-warning">Add to cart</button>
+                <a href="/{{ product.id }}" class="btn btn-warning">View</a>
+                <button id="{{ product.id }}" href="" class="btn atc btn-warning">Add to cart</button>
               </div>
             </div>
           </div>
-
-
         {% endfor %}
       </div>
 
       <div class="row">
         <div class="col-md-3 offset-md-4">
-            <ul class="pagination">
-                {%  if product_objects.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ product_objects.previous_page_number }}">Previous</a>
-                </li>
-                {% endif %}
+          <ul class="pagination">
+            {% if product_objects.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ product_objects.previous_page_number }}">Previous</a>
+              </li>
+            {% endif %}
 
-                <li class="page-item active">
-                    <a class="page-link" href="?page={{ product_objects.number }}">Current</a>
-                </li>
+            <li class="page-item active">
+              <a class="page-link" href="?page={{ product_objects.number }}">Current</a>
+            </li>
 
-                {% if product_objects.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ product_objects.next_page_number }}">Next</a>
-                    </li>
-                {% endif %}
-
-            </ul>
+            {% if product_objects.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ product_objects.next_page_number }}">Next</a>
+              </li>
+            {% endif %}
+          </ul>
         </div>
       </div>
-
-
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
   <script>
-    let cart;
-
+    let cart
+    
     if (localStorage.getItem('cart') == null) {
-      cart = {};
+      cart = {}
+    } else {
+      cart = JSON.parse(localStorage.getItem('cart'))
     }
-    else{
-      cart = JSON.parse(localStorage.getItem('cart'));
+    
+    $(document).on('click', '.atc', function () {
+      console.log('clicked')
+      let item_id = this.id.toString()
+      console.log(item_id)
+    
+      if (cart[item_id] != undefined) {
+        cart[item_id] = cart[item_id] + 1
+      } else {
+        cart[item_id] = 1
+      }
+      console.log(cart)
+      localStorage.setItem('cart', JSON.stringify(cart))
+      document.getElementById('id-cart').innerHTML = '(' + Object.keys(cart).length + ')'
+    })
+    
+    // Update cart
+    function updateCart() {
+      let cartString = ''
+    
+      cartString += '<h5>Cart</h5>'
+    
+      let cartIndex = 1
+    
+      for (var x in cart) {
+        let nameEl = document.getElementById('nm' + x)
+        let name
+        if (nameEl) {
+          name = nameEl.innerHTML
+        } else {
+          name = 'Product ' + x
+        }
+    
+        cartString += `${cartIndex}. ${name} Qty: ${cart[x]}<br>`
+    
+        cartIndex += 1
+      }
+    
+      cartString += "<a href='/checkout' class='btn btn-warning'>Checkout</a>";
+      document.getElementById('cart').setAttribute('data-bs-content', cartString)
+      // Init popover
+      const popoverTrigger = document.getElementById('cart')
+      const popover = new bootstrap.Popover(popoverTrigger)
     }
-
-    $(document).on('click', '.atc', function(){
-        console.log("clicked")
-        let item_id = this.id.toString();
-        console.log(item_id)
-
-        if(cart[item_id] != undefined){
-          cart[item_id] = cart[item_id] + 1;
-        }
-        else{
-          cart[item_id] = 1;
-        }
-        console.log(cart);
-        localStorage.setItem('cart', JSON.stringify(cart));
-
-    });
+    
+    // Update cart
+    updateCart()
   </script>
   <script>
     // Initialize Notyf
-    var notyf = new Notyf();
-
+    var notyf = new Notyf()
+    
     // Add event listener to "Add to cart" buttons
     document.addEventListener('DOMContentLoaded', function () {
-      var addToCartButtons = document.querySelectorAll('.atc');
+      var addToCartButtons = document.querySelectorAll('.atc')
       addToCartButtons.forEach(function (button) {
         button.addEventListener('click', function () {
           // Display success notification
-          notyf.success('Product added to cart successfully!');
-        });
-      });
-    });
+          notyf.success('Product added to cart successfully!')
+        })
+      })
+    })
   </script>
 </html>
