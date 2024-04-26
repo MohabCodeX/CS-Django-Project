@@ -56,6 +56,10 @@
                       <label for="inputZip" class="form-label">Zip</label>
                       <input id="zipcode" name="zipcode" type="text" class="form-control" id="inputZip">
                     </div>
+                    <div class="col-md-2">
+                      <label for="inputZip" class="form-label">Amount to be Paid</label>
+                      <input id="total" name="total" type="text" class="form-control" id="total" disabled readonly >
+                    </div>
                     
                     </div>
                     <div class="col-12">
@@ -74,19 +78,28 @@
     else{
         var cart = JSON.parse(localStorage.getItem('cart'));
     }
+    let total =0;
     for(item in cart){
         let quantity = cart[item][0];
         let name = cart[item][1];   
         let price = cart[item][2];
         let priceqty = price * quantity;
+        
+        total = total + cart[item][2];
 
         let formattedPrice = priceqty.toLocaleString();
 
         itemString = `<li class="list-group-item">${name} 
             <span class="badge rounded-pill bg-light text-dark">${quantity}</span> 
             <span class="badge rounded-pill bg-warning text-dark">${formattedPrice}</span></li>`;
+
+        
         $('#item_list').append(itemString);
     }
+    totalPrice = `<li class="list-group-item d-flex justify-content-between align-items-center fs-4"><b>Total</b> 
+      <span class="badge rounded-pill text-bg-success fs-6">${total}</li>`;
+      $('#total').val(total);
+      $('#item_list').append(totalPrice);
 
     $("#items").val(JSON.stringify(cart));
 </script>

@@ -19,3 +19,4 @@ class Order(models.Model):
     city = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     zipcode = models.CharField(max_length=10, default='00000')
+    total = models.CharField(max_length=200)

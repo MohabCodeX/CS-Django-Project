@@ -158,6 +158,8 @@ $(document).on('click', '.atc', function () {
     price = parseFloat(document.getElementById('price'+item_id).innerHTML);
     name = document.getElementById('nm'+item_id).innerHTML;
     cart[item_id] = [quantity, name, price,totalCount];
+
+    updateCart();
   }
   
   // Update total items count for all items in the cart
@@ -185,26 +187,30 @@ function updateTotalItemsCount(cart) {
 
 
 // Update cart info
-function updateCart() {
-  let cartString = '';
+  function updateCart() {
+    let cartString = '<h5>Cart</h5>';
+    let totalCount = 0;
 
-  cartString += '<h5>Cart</h5>';
+    for (const item in cart) {
+      cartString += cart[item][1] + ' Qty: ' + cart[item][0] + '<br>';
+      totalCount += cart[item][0];
+    }
 
-  let cartObject = JSON.parse(localStorage.getItem('cart'));
+    cartString += 'Total Items Count: ' + totalCount + '<br>';
+    cartString += "<a href='/checkout' class='btn btn-warning'>Checkout</a>";
 
-  for (item in cartObject) {
-
-    cartString += cartObject[item][1] +' Qty: '+ cartObject[item][0] + '<br>'; // Display quantity
+    const popoverInstance = bootstrap.Popover.getInstance(document.getElementById('cart'));
+    if (popoverInstance) {
+      popoverInstance.config.content = cartString;
+      popoverInstance.update();
+    } else {
+      const popoverTrigger = document.getElementById('cart');
+      const popover = new bootstrap.Popover(popoverTrigger, {
+        html: true,
+        content: cartString
+      });
+    }
   }
-  cartString += 'Total Items Count: ' + cartObject[item][3] + '<br>'; // Display total items count
-
-  cartString += "<a href='/checkout' class='btn btn-warning'>Checkout</a>";
-  document.getElementById('cart').setAttribute('data-bs-content', cartString);
-  // Init popover
-  const popoverTrigger = document.getElementById('cart');
-  const popover = new bootstrap.Popover(popoverTrigger);
-}
-
 
 // Update cart
 updateCart();
