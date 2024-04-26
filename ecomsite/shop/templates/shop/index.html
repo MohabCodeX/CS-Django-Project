@@ -1,4 +1,6 @@
 {% load static %}
+{% load filters %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -89,7 +91,7 @@
               <a href="/{{ product.id }}"><img src="{{ product.image }}" class="card-img-top" /></a>
               <div class="card-body">
                 <div id="nm{{ product.id }}" class="card-title">{{ product.title }}</div>
-                <div class="card-text">{{ product.formatted_price }} L.E</div>
+                <div id="price{{product.id}}" class="card-text">{{ product.price | format_price }} L.E</div>
                 <a href="/{{ product.id }}" class="btn btn-warning">View</a>
                 <button id="{{ product.id }}" href="" class="btn atc btn-warning">Add to cart</button>
               </div>
@@ -130,61 +132,85 @@
     }
 
     function updateCartCount() {
-      document.getElementById('id-cart').innerHTML = '(' + Object.keys(cart).length + ')'
+      // Calculate total count without errors
+      let totalCount = 0;
+      for (const itemId in cart) {
+        totalCount += cart[itemId][0]; // Adding quantity of each item to totalCount
+      }
+      document.getElementById('id-cart').innerHTML = '(' + totalCount + ')';
     }
     
-    // Update cart count when the page loads
-    updateCartCount();
-    
-    $(document).on('click', '.atc', function () {
-      console.log('clicked')
-      let item_id = this.id.toString()
-      console.log(item_id)
+   // Update cart count when the page loads
+updateCartCount();
 
-    
-      if (cart[item_id] != undefined) {
-        quantity = cart[item_id][0] + 1
-        cart[item_id][0] = quantity
-      } else {
-        quantity = 1
-        name = document.getElementById('nm'+item_id).innerHTML
-        cart[item_id] = [quantity, name]
-      }
+$(document).on('click', '.atc', function () {
+  console.log('clicked');
+  let item_id = this.id.toString();
+  console.log(item_id);
 
-      console.log(cart)
-      localStorage.setItem('cart', JSON.stringify(cart))
-      document.getElementById('id-cart').innerHTML = '(' + Object.keys(cart).length + ')'
+  if (cart[item_id] != undefined) {
+    quantity = cart[item_id][0] + 1;
+    cart[item_id][0] = quantity;
+    cart[item_id][2] = cart[item_id][2] + parseFloat(document.getElementById('price'+item_id).innerHTML);
+  } else {
+    quantity = 1;
+    let totalCount = 0;
+    price = parseFloat(document.getElementById('price'+item_id).innerHTML);
+    name = document.getElementById('nm'+item_id).innerHTML;
+    cart[item_id] = [quantity, name, price,totalCount];
+  }
+  
+  // Update total items count for all items in the cart
+  updateTotalItemsCount(cart);
 
-      updateCart();
-    })
-    
-    // Update cart info
-    function updateCart() {
-      let cartString = ''
-    
-      cartString += '<h5>Cart</h5>'
-    
-      let cartIndex = 1
+  console.log(cart);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount(); // Update cart count after adding item
 
-      let cartObject = JSON.parse(localStorage.getItem('cart'))
-    
-      for (item in cartObject) {  
-        cartString += cartObject[item][1] +'Qty: '+ cartObject[item][0] + '<br>'
-    
-        cartIndex += 1
-      }
-    
-      cartString += "<a href='/checkout' class='btn btn-warning'>Checkout</a>";
-      document.getElementById('cart').setAttribute('data-bs-content', cartString)
-      // Init popover
-      const popoverTrigger = document.getElementById('cart')
-      const popover = new bootstrap.Popover(popoverTrigger)
+  updateCart();
+});
+
+
+// Function to update total items count for all items in the cart
+function updateTotalItemsCount(cart) {
+  for (const item in cart) {
+    let totalCount = 0; // Initialize totalCount for each item
+    for (const itemId in cart) {
+      totalCount += cart[itemId][0]; // Add the quantity of each item to totalCount
     }
-    
-    // Update cart
-    updateCart()
-  </script>
-  <script>
+    cart[item][3] = totalCount; // Update total items count for the current item
+  }
+  
+}
+
+
+// Update cart info
+function updateCart() {
+  let cartString = '';
+
+  cartString += '<h5>Cart</h5>';
+
+  let cartObject = JSON.parse(localStorage.getItem('cart'));
+
+  for (item in cartObject) {
+
+    cartString += cartObject[item][1] +' Qty: '+ cartObject[item][0] + '<br>'; // Display quantity
+  }
+  cartString += 'Total Items Count: ' + cartObject[item][3] + '<br>'; // Display total items count
+
+  cartString += "<a href='/checkout' class='btn btn-warning'>Checkout</a>";
+  document.getElementById('cart').setAttribute('data-bs-content', cartString);
+  // Init popover
+  const popoverTrigger = document.getElementById('cart');
+  const popover = new bootstrap.Popover(popoverTrigger);
+}
+
+
+// Update cart
+updateCart();
+
+</script>
+<script>
     // Initialize Notyf
     var notyf = new Notyf()
     
@@ -198,5 +224,6 @@
         })
       })
     })
-  </script>
+</script>
+
 </html>

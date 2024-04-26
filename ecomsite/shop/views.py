@@ -12,10 +12,6 @@ def index(request):
     if item_name:
         product_objects = product_objects.filter(title__icontains=item_name)
     
-    # Format prices with thousands separators and without decimal places
-    locale.setlocale(locale.LC_ALL, '')  # Use the default locale
-    for product in product_objects:
-        product.formatted_price = locale.format_string("%.0f", product.price, grouping=True)
      
     #Paginator Code
     paginator = Paginator(product_objects, 4) # Show 4 products per page
@@ -35,6 +31,7 @@ def checkout(request):
 
     if request.method == 'POST':
         # Get the form data
+        items = request.POST.get('items',"")
         name = request.POST.get('name',"")
         email = request.POST.get('email',"")
         address = request.POST.get('address',"")
@@ -43,7 +40,7 @@ def checkout(request):
         state = request.POST.get('state',"")
         zipcode = request.POST.get('zipcode',"")
 
-        order = Order(name=name, email=email, address=address, address2=address2, city=city, state=state, zipcode=zipcode)
+        order = Order(items=items, name=name, email=email, address=address, address2=address2, city=city, state=state, zipcode=zipcode)
         order.save()
 
     return render(request,'shop/checkout.html')

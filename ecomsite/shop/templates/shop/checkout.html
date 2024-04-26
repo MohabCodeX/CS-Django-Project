@@ -22,6 +22,7 @@
             <div class="col-md-12">
                 <form class="row g-3" method="POST">
                     {% csrf_token %}
+                    <input type="hidden" id="items" name="items">
                     <div class="col-md-6">
                       <label for="inputEmail4" class="form-label">Name</label>
                       <input id ="name" name="name" type="text" class="form-control" id="inputEmail4" placeholder="your name...">
@@ -74,11 +75,19 @@
         var cart = JSON.parse(localStorage.getItem('cart'));
     }
     for(item in cart){
-        let name = cart[item][1];
         let quantity = cart[item][0];
+        let name = cart[item][1];   
+        let price = cart[item][2];
+        let priceqty = price * quantity;
 
-        itemString = `<li class="list-group-item">${name} | Qty: ${quantity}</li>`;
+        let formattedPrice = priceqty.toLocaleString();
+
+        itemString = `<li class="list-group-item">${name} 
+            <span class="badge rounded-pill bg-light text-dark">${quantity}</span> 
+            <span class="badge rounded-pill bg-warning text-dark">${formattedPrice}</span></li>`;
         $('#item_list').append(itemString);
     }
+
+    $("#items").val(JSON.stringify(cart));
 </script>
 </html>
