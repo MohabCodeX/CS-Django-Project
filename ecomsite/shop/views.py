@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Products
 import locale
 from django.core.paginator import Paginator
+from .models import Order
 
 def index(request):
     product_objects = Products.objects.all()
@@ -29,5 +30,20 @@ def detail(request,id):
     product_object = Products.objects.get(id=id)
     return render(request, 'shop/detail.html', {'product_object': product_object})
 
+
 def checkout(request):
+
+    if request.method == 'POST':
+        # Get the form data
+        name = request.POST.get('name',"")
+        email = request.POST.get('email',"")
+        address = request.POST.get('address',"")
+        address2 = request.POST.get('address2',"")
+        city = request.POST.get('city',"")
+        state = request.POST.get('state',"")
+        zipcode = request.POST.get('zipcode',"")
+
+        order = Order(name=name, email=email, address=address, address2=address2, city=city, state=state, zipcode=zipcode)
+        order.save()
+
     return render(request,'shop/checkout.html')

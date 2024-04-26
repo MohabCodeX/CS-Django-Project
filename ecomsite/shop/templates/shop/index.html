@@ -123,47 +123,53 @@
   </body>
   <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
   <script>
-    let cart
-    
     if (localStorage.getItem('cart') == null) {
       cart = {}
     } else {
       cart = JSON.parse(localStorage.getItem('cart'))
     }
+
+    function updateCartCount() {
+      document.getElementById('id-cart').innerHTML = '(' + Object.keys(cart).length + ')'
+    }
+    
+    // Update cart count when the page loads
+    updateCartCount();
     
     $(document).on('click', '.atc', function () {
       console.log('clicked')
       let item_id = this.id.toString()
       console.log(item_id)
+
     
       if (cart[item_id] != undefined) {
-        cart[item_id] = cart[item_id] + 1
+        quantity = cart[item_id][0] + 1
+        cart[item_id][0] = quantity
       } else {
-        cart[item_id] = 1
+        quantity = 1
+        name = document.getElementById('nm'+item_id).innerHTML
+        cart[item_id] = [quantity, name]
       }
+
       console.log(cart)
       localStorage.setItem('cart', JSON.stringify(cart))
       document.getElementById('id-cart').innerHTML = '(' + Object.keys(cart).length + ')'
+
+      updateCart();
     })
     
-    // Update cart
+    // Update cart info
     function updateCart() {
       let cartString = ''
     
       cartString += '<h5>Cart</h5>'
     
       let cartIndex = 1
+
+      let cartObject = JSON.parse(localStorage.getItem('cart'))
     
-      for (var x in cart) {
-        let nameEl = document.getElementById('nm' + x)
-        let name
-        if (nameEl) {
-          name = nameEl.innerHTML
-        } else {
-          name = 'Product ' + x
-        }
-    
-        cartString += `${cartIndex}. ${name} Qty: ${cart[x]}<br>`
+      for (item in cartObject) {  
+        cartString += cartObject[item][1] +'Qty: '+ cartObject[item][0] + '<br>'
     
         cartIndex += 1
       }
