@@ -9,35 +9,7 @@
     </head>
     <body>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">روبابيكيا</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">All Products</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                                <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="d-flex">
-                        <button id="cart" data-bs-html="true" type="button" class="btn btn-outline-dark" data-bs-container="body"
-                    data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
-                            <i class="bi-cart-fill me-1"></i>
-                            <span>Cart</span>
-                            <span class="badge bg-dark text-white ms-1 rounded-pill"><span id="id-cart" class="cart-label">(0)</span></span>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </nav>
+        {% include "navbar.html" %}
         <!-- Header-->
         <header class="mainbackground py-5">
           <div class="container px-4 px-lg-5 my-5">
@@ -50,81 +22,83 @@
         
         <!-- Section-->
         <section class="pt-2">
-          
-            <div class="container px-4 px-lg-5 mt-5 mb-5">
+          <div class="container px-4 px-lg-5 mt-5 mb-5">
               <div class="row">
-                <div class="col-md-8 offset-md-2 mb-4 ">
-                    <form class="card card-sm">
-                        <div class="card-body row no-gutters align-items-center">
-                            <div class="col">
-                                <input type="search" name="item_name" placeholder="Search for products..."
-                                    class="form-control form-control-borderless" />
-                            </div>
-                            <div class="col-auto">
-                                <button class="btn btn-success" type="submit">Search</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                  <div class="col-md-8 offset-md-2 mb-4">
+                      <form class="card card-sm">
+                          <div class="card-body row no-gutters align-items-center">
+                              <div class="col">
+                                  <input type="search" name="item_name" placeholder="Search for products..."
+                                      class="form-control form-control-borderless" />
+                              </div>
+                              <div class="col-auto">
+                                  <button class="btn btn-success" type="submit">Search</button>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
               <div class="row gx-4 gx-lg-5 justify-content-center">
-    {% for product in product_objects %}
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="card h-100">
-            <!-- Product image-->
-            <a href="/{{ product.id }}"><img src="{{ product.image }}" class="card-img-top" /></a>
-            <!-- Product details-->
-            <div class="card-body p-3">
-                <div class="text-center">
-                    <!-- Product name-->
-                    <h5 id="nm{{ product.id }}" class="fw-bolder">{{ product.title }}</h5>
-                    <!-- Product price-->
-                    <div id="price{{product.id}}" class="card-text">{{ product.price | format_price }} L.E</div>
-                </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-3 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                    <a href="/{{ product.id }}" class="btn btn-outline-dark">View</a>
-                    <button id="{{ product.id }}" href="" class="btn atc btn-outline-dark">Add to cart</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-
-
-                   
-                    
-                </div>
-                <!-- Pagination -->
-        <div class="row justify-content-center">
-          <div class="col-md-1">
-              <ul class="pagination justify-content-center">
-                  {% if product_objects.has_previous %}
-                  <li class="page-item">
-                      <a class="page-link" href="?page={{ product_objects.previous_page_number }}">Previous</a>
-                  </li>
-                  {% endif %}
-
-                  <li class="page-item active">
-                      <a class="page-link" href="?page={{ product_objects.number }}">Current</a>
-                  </li>
-
-                  {% if product_objects.has_next %}
-                  <li class="page-item">
-                      <a class="page-link" href="?page={{ product_objects.next_page_number }}">Next</a>
-                  </li>
-                  {% endif %}
-              </ul>
+                  {% for product in product_objects %}
+                  <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                      <div class="card h-100">
+                          <!-- Product image-->
+                          <a href="/{{ product.id }}"><img src="{{ product.image }}" class="card-img-top" /></a>
+                          <!-- Product details-->
+                          <div class="card-body p-3">
+                              <div class="text-center">
+                                  <!-- Product name-->
+                                  <h5 id="nm{{ product.id }}" class="fw-bolder">{{ product.title }}</h5>
+                                  <!-- Check if the product has a discount price -->
+                                  {% if product.discount_price %}
+                                  <!-- Display old price with strikethrough -->
+                                  <div class="old-price text-muted" style="text-decoration: line-through;">{{ product.price | format_price }} L.E</div>
+                                  <!-- Display discount price -->
+                                  <div id="discount-price{{product.id}}" class="discount-price">{{ product.discount_price | format_price }} L.E</div>
+                                  {% else %}
+                                  <!-- If no discount, display regular price -->
+                                  <div id="price{{product.id}}" class="card-text">{{ product.price | format_price }} L.E</div>
+                                  {% endif %}
+                              </div>
+                          </div>
+                          <!-- Product actions-->
+                          <div class="card-footer p-3 pt-0 border-top-0 bg-transparent">
+                              <div class="text-center">
+                                  <a href="/{{ product.id }}" class="btn btn-outline-dark">View</a>
+                                  <button id="{{ product.id }}" href="" class="btn atc btn-outline-dark">Add to cart</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  {% endfor %}
+              </div>
+              <!-- Pagination -->
+              <div class="row justify-content-center">
+                  <div class="col-md-1">
+                      <ul class="pagination justify-content-center">
+                          {% if product_objects.has_previous %}
+                          <li class="page-item">
+                              <a class="page-link" href="?page={{ product_objects.previous_page_number }}">Previous</a>
+                          </li>
+                          {% endif %}
+      
+                          <li class="page-item active">
+                              <a class="page-link" href="?page={{ product_objects.number }}">Current</a>
+                          </li>
+      
+                          {% if product_objects.has_next %}
+                          <li class="page-item">
+                              <a class="page-link" href="?page={{ product_objects.next_page_number }}">Next</a>
+                          </li>
+                          {% endif %}
+                      </ul>
+                  </div>
+              </div>
           </div>
-      </div>
-  </div>
-        </section>
+      </section>
+      
         <!-- Footer-->
-        <footer class="py-2 bg-dark">
-          <div class="container"><p class="m-0 text-center text-white">Copyright &copy; روبابيكيا 2024</p></div>
-      </footer>     
+        {% include "footer.html" %}    
     </body>
     <script>
       if (localStorage.getItem('cart') == null) {
@@ -148,17 +122,20 @@
     // Event listener for click on '.atc' elements
     $(document).on('click', '.atc', function () {
       let item_id = this.id.toString();
+      let priceElement = document.getElementById('price' + item_id);
+      let discountPriceElement = document.getElementById('discount-price' + item_id);
+  
       if (cart[item_id] != undefined) {
           quantity = cart[item_id][0] + 1;
           cart[item_id][0] = quantity;
-          let priceString = document.getElementById('price'+item_id).innerHTML.replace(/[^\d.-]/g, ''); // Remove non-numeric characters
+          let priceString = discountPriceElement ? discountPriceElement.innerHTML.replace(/[^\d.-]/g, '') : priceElement.innerHTML.replace(/[^\d.-]/g, ''); // Check if discount price exists, else use regular price
           cart[item_id][2] = cart[item_id][2] + parseFloat(priceString); // Parse the price correctly
       } else {
           quantity = 1;
           let totalCount = 0;
-          let priceString = document.getElementById('price'+item_id).innerHTML.replace(/[^\d.-]/g, ''); // Remove non-numeric characters
+          let priceString = discountPriceElement ? discountPriceElement.innerHTML.replace(/[^\d.-]/g, '') : priceElement.innerHTML.replace(/[^\d.-]/g, ''); // Check if discount price exists, else use regular price
           price = parseFloat(priceString); // Parse the price correctly
-          name = document.getElementById('nm'+item_id).innerHTML;
+          name = document.getElementById('nm' + item_id).innerHTML;
           cart[item_id] = [quantity, name, price, totalCount];
       }
       updateTotalItemsCount(cart);
@@ -166,7 +143,8 @@
       updateCartCount();
       updateCart();
       console.log(cart);
-    });
+  });
+  
     
     
     // Function to update total items count for all items in the cart
