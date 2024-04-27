@@ -21,4 +21,6 @@
     transition: transform 0.5s;
   }
 
-  
+  .mainbackground{
+    background-color: #1e1e1e;
+  }
