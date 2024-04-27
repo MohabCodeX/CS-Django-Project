@@ -155,31 +155,27 @@
  // Update cart count when the page loads
 updateCartCount();
 
+// Event listener for click on '.atc' elements
 $(document).on('click', '.atc', function () {
-console.log('clicked');
-let item_id = this.id.toString();
-console.log(item_id);
-
-if (cart[item_id] != undefined) {
-  quantity = cart[item_id][0] + 1;
-  cart[item_id][0] = quantity;
-  cart[item_id][2] = cart[item_id][2] + parseFloat(document.getElementById('price'+item_id).innerHTML);
-} else {
-  quantity = 1;
-  let totalCount = 0;
-  price = parseFloat(document.getElementById('price'+item_id).innerHTML);
-  name = document.getElementById('nm'+item_id).innerHTML;
-  cart[item_id] = [quantity, name, price,totalCount];
-}
-
-// Update total items count for all items in the cart
-updateTotalItemsCount(cart);
-
-console.log(cart);
-localStorage.setItem('cart', JSON.stringify(cart));
-updateCartCount(); // Update cart count after adding item
-
-updateCart();
+  let item_id = this.id.toString();
+  if (cart[item_id] != undefined) {
+      quantity = cart[item_id][0] + 1;
+      cart[item_id][0] = quantity;
+      let priceString = document.getElementById('price'+item_id).innerHTML.replace(/[^\d.-]/g, ''); // Remove non-numeric characters
+      cart[item_id][2] = cart[item_id][2] + parseFloat(priceString); // Parse the price correctly
+  } else {
+      quantity = 1;
+      let totalCount = 0;
+      let priceString = document.getElementById('price'+item_id).innerHTML.replace(/[^\d.-]/g, ''); // Remove non-numeric characters
+      price = parseFloat(priceString); // Parse the price correctly
+      name = document.getElementById('nm'+item_id).innerHTML;
+      cart[item_id] = [quantity, name, price, totalCount];
+  }
+  updateTotalItemsCount(cart);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartCount();
+  updateCart();
+  console.log(cart);
 });
 
 
@@ -195,6 +191,20 @@ for (const item in cart) {
 
 }
 
+// Init popover
+var popoverTrigger = document.getElementById('cart');
+var popover = new bootstrap.Popover(popoverTrigger, {
+    content: 'Loading...',
+});
+
+// Function to update popover content
+function updatePopoverContent(content) {
+    // Update popover content config
+    popover._config.content = content;
+    // Update popover content
+    popover.setContent();
+}
+
 
 // Update cart info
 function updateCart() {
@@ -208,13 +218,12 @@ for (item in cartObject) {
 
   cartString += cartObject[item][1] +' Qty: '+ cartObject[item][0] + '<br>'; // Display quantity
 }
-cartString += 'Total Items Count: ' + cartObject[item][3] + '<br>'; // Display total items count
 
+cartString += 'Total Items Count: ' + cartObject[item][3] + '<br>'; // Display total items count
 cartString += "<a href='/checkout' class='btn btn-warning'>Checkout</a>";
-document.getElementById('cart').setAttribute('data-bs-content', cartString);
-// Init popover
-const popoverTrigger = document.getElementById('cart');
-const popover = new bootstrap.Popover(popoverTrigger);
+
+updatePopoverContent(cartString);
+
 }
 
 
