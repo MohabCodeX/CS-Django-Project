@@ -1,75 +1,185 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'shop/checkout.css' %}" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" />
+        <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <div class="container">
-        <div class="col-md-12">
-            <div class="row">
-                <ul class="list-group" id="item_list">
-                   
-                  </ul>
-            </div>
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-3" src="{% static 'photos/Untitled-2.png' %}"
+                alt="" width="200" height="120">
+            <h2>Checkout form</h2>
+            <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form
+                group has a validation state that can be triggered by attempting to submit the form without completing
+                it.</p>
         </div>
-
         <div class="row">
-            <div class="col-md-12">
-                <form class="row g-3" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" id="items" name="items">
-                    <div class="col-md-6">
-                      <label for="inputEmail4" class="form-label">Name</label>
-                      <input id ="name" name="name" type="text" class="form-control" id="inputEmail4" placeholder="your name...">
+          <div class="col-md-8 ">
+            <h4 class="mb-3">Billing address</h4>
+            <form class="needs-validation" novalidate="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="items" name="items">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName">Full Name</label>
+                        <input id="name" name="name" type="text" class="form-control" id="firstName"
+                            placeholder="Mohab Ibraheem" value="" required="">
+                        <div class="invalid-feedback"> Valid first name is required. </div>
                     </div>
-                    <div class="col-md-6">
-                      <label for="inputPassword4" class="form-label">Email</label>
-                      <input id="email" name="email" type="email" class="form-control" id="inputPassword4" placeholder="mohab@email.com">
+                    <div class="col-md-6 mb-3">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="text" class="form-control" id="email"
+                            placeholder="mohab@email.com" value="" required="">
+                        <div class="invalid-feedback"> Valid Email is required. </div>
                     </div>
-                    <div class="col-12">
-                      <label for="inputAddress" class="form-label">Address</label>
-                      <input id="address" name="address" type="text" class="form-control" id="inputAddress" placeholder="1234 Beni-suef">
+                </div>
+                <div class="mb-3">
+                    <label for="inputAddress" class="form-label">Address</label>
+                    <div class="input-group">
+
+                        <input id="address" name="address" type="text" class="form-control" id="inputAddress"
+                            placeholder="1234 Beni-suef" required>
+                        <div class="invalid-feedback" style="width: 100%;"> Your username is required. </div>
                     </div>
-                    <div class="col-12">
-                      <label for="inputAddress2" class="form-label">Address 2</label>
-                      <input id="address2" name="address2"type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+                </div>
+                <div class="mb-3">
+                    <label for="email">Email <span class="text-muted">(Optional)</span></label>
+                    <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                    <div class="invalid-feedback"> Please enter a valid email address for shipping updates. </div>
+                </div>
+                <div class="mb-3">
+                    <label for="address">Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="">
+                    <div class="invalid-feedback"> Please enter your shipping address. </div>
+                </div>
+                <div class="mb-3">
+                    <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                    <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment or suite">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="city">City</label>
+                        <input id="city" name="city" type="text" class="form-control" placeholder="City" required="">
+                        <div class="invalid-feedback">City is required.</div>
                     </div>
-                    <div class="col-md-6">
-                      <label for="inputCity" class="form-label">City</label>
-                      <input id="city" name="city"type="text" class="form-control" id="inputCity">
+                    <div class="col-md-6 mb-3">
+                        <label for="state">State</label>
+                        <select id="state" class="form-select" name="state" required>
+                            <option value="">Choose...</option>
+                            <option>Cairo</option>
+                            <option>Alexandria</option>
+                            <option>Beni-Suef</option>
+                        </select>
+                        <div class="invalid-feedback">State is required.</div>
                     </div>
-                    <div class="col-md-4">
-                      <label for="inputState" class="form-label">State</label>
-                      <select id="inputState" class="form-select" id="state" name="state">
-                        <option selected>Choose...</option>
-                        <option>Cairo</option>
-                        <option>Alexandria</option>
-                        <option>Beni-Suef</option>
-                      </select>
+                    <div class="col-md-3 mb-3">
+                        <label for="inputZip" class="form-label">Zip</label>
+                        <input id="zipcode" name="zipcode" type="text" class="form-control" id="inputZip" required>
+                        <div class="invalid-feedback"> Zip code required. </div>
                     </div>
-                    <div class="col-md-2">
-                      <label for="inputZip" class="form-label">Zip</label>
-                      <input id="zipcode" name="zipcode" type="text" class="form-control" id="inputZip">
+                    
+                </div>
+                <hr class="mb-4">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-name">Name on card</label>
+                        <input id = "ccname" name="ccname" type="text" class="form-control" id="cc-name" placeholder="" required="">
+                        <small class="text-muted">Full name as displayed on card</small>
+                        <div class="invalid-feedback"> Name on card is required </div>
                     </div>
-                    <div class="col-md-2">
-                      <label for="inputZip" class="form-label">Amount to be Paid</label>
-                      <input id="total" name="total" type="text" class="form-control" id="total" disabled readonly >
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-number">Credit card number</label>
+                        <input id="ccnumber" name="ccnumber" type="text" class="form-control" id="cc-number" placeholder="" required="">
+                        <div class="invalid-feedback"> Credit card number is required </div>
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label for="cc-expiration">Expiration</label>
+                        <input id="expiration" name="expiration" type="text" class="form-control" id="cc-expiration" placeholder="" required="">
+                        <div class="invalid-feedback">Expiration date required</div>
                     </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-primary">Place Order</button>
+                    <div class="col-md-3 mb-3">
+                        <label for="cc-cvv">CVV</label>
+                        <input id="cvv" name="cvv" type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+                        <div class="invalid-feedback">Security code required</div>
                     </div>
-                  </form>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="total" >Amount to be Paid</label>
+                        <input id="total" name="total" type="text" class="form-control"  readonly>
+                    </div>
+                </div>
+                
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block subbtn" type="submit">Continue to checkout</button>
+            </form>
         </div>
 
+            <div class="col-md-4 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                    <span id="cartItemCount" class="badge rounded-pill text-bg-dark">3</span>
+                </h4>
+                <ul class="list-group mb-3 sticky-top" id="item_list">
+                    <!-- JavaScript will populate this list -->
+                </ul>
+                <ul class="list-group mb-3" id="total_price">
+                    <!-- Total price will be inserted here by JavaScript -->
+                </ul>
+            </div>
+
+            
+      </div>
+        </div>
+            
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">© 2017-2019 Company Name</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Privacy</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Support</a></li>
+            </ul>
+        </footer>
     </div>
 </body>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        }, false)
+    }())
+</script>
 <script>
     if(localStorage.getItem('cart') == null){
         var cart = {};
@@ -77,32 +187,45 @@
     else{
         var cart = JSON.parse(localStorage.getItem('cart'));
     }
-    let total =0;
+    let total = 0;
+    let itemCount = 0
     for(item in cart){
         let quantity = cart[item][0];
         let name = cart[item][1];   
         let price = cart[item][2];
-        let priceqty = price * quantity;
+        let priceqty = price;
+        let totalCount = cart[item][3]
+        
         
         total = total + cart[item][2];
-        
-
+  
         let formattedPrice = priceqty.toLocaleString();
-        
-
-        itemString = `<li class="list-group-item">${name} 
-            <span class="badge rounded-pill bg-light text-dark">${quantity}</span> 
-            <span class="badge rounded-pill bg-warning text-dark">${formattedPrice}</span></li>`;
-
-        
+  
+        let itemString = `<li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="my-0">${name}</h6>
+                                <small class="text-muted">Quantity: ${quantity}</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">${formattedPrice}</span>
+                          </li>`;
+  
         $('#item_list').append(itemString);
-    }
-    let formattotal = total.toLocaleString();
-    totalPrice = `<li class="list-group-item d-flex justify-content-between align-items-center fs-4"><b>Total</b> 
-      <span class="badge rounded-pill text-bg-success fs-6">${formattotal}</li>`;
-      $('#total').val(total);
-      $('#item_list').append(totalPrice);
 
+         // Increment itemCount by 1 for each unique item
+         itemCount += 1;
+    }
+    let formattedTotal = total.toLocaleString();
+    let totalPrice = `<li class="list-group-item d-flex justify-content-between">
+                        <span>Total (LE)</span>
+                        <strong>${formattedTotal}</strong>
+                      </li>`;
+    $('#total').val(total);
+    $('#total_price').html(totalPrice);
+    $('#cartItemCount').text(itemCount);
+    
+  
     $("#items").val(JSON.stringify(cart));
-</script>
+  </script>
+
+
 </html>

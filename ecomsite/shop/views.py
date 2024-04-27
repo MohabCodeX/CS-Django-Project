@@ -40,8 +40,28 @@ def checkout(request):
         state = request.POST.get('state',"")
         zipcode = request.POST.get('zipcode',"")
         total = request.POST.get('total',"") 
+        ccname = request.POST.get('ccname', "")
+        ccnumber = request.POST.get('ccnumber', "")
+        expiration = request.POST.get('expiration', "")
+        cvv = request.POST.get('cvv', "")
 
-        order = Order(items=items, name=name, email=email, address=address, address2=address2, city=city, state=state, zipcode=zipcode, total=total)
+        # Create an instance of the Order model
+        order = Order(
+            items=items,
+            name=name,
+            email=email,
+            address=address,
+            address2=address2,
+            city=city,
+            state=state,
+            zipcode=zipcode,
+            total=total,
+            ccname=ccname,
+            ccnumber=ccnumber,
+            expiration=expiration,
+            cvv=cvv
+        )
+
         order.save()
 
     return render(request,'shop/checkout.html')

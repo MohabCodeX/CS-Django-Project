@@ -20,3 +20,7 @@ class Order(models.Model):
     state = models.CharField(max_length=200)
     zipcode = models.CharField(max_length=10, default='00000')
     total = models.CharField(max_length=200)
+    ccname = models.CharField(max_length=200, default='')
+    ccnumber = models.CharField(max_length=16, default='')  
+    expiration = models.CharField(max_length=10, default='')  
+    cvv = models.CharField(max_length=4, default='') 
