@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from shop import views
+from django.conf.urls import handler404
+from shop.views import custom_404_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,3 +26,7 @@ urlpatterns = [
     path('<int:id>/', views.detail, name='detail'),
     path('checkout/', views.checkout, name='checkout'),
 ]
+
+
+handler404 = custom_404_view
+

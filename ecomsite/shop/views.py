@@ -65,3 +65,6 @@ def checkout(request):
         order.save()
 
     return render(request,'shop/checkout.html')
+
+def custom_404_view(request, exception):
+    return render(request, 'shop/404.html', status=404)
