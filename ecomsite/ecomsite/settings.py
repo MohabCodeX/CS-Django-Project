@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-3e*=_wpdy&y%+f28zlw2-7+-l#c38brh2^s#t)lko(%h=+r9)p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'yourdomain.com']
-
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -57,7 +56,7 @@ ROOT_URLCONF = 'ecomsite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,7 +122,6 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
