@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from .models import Products
-import locale
 from django.core.paginator import Paginator
 from .models import Order
 
