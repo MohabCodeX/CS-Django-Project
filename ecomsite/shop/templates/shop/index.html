@@ -1,5 +1,6 @@
 {% load static %}
-{% load filters %}
+{% load humanize %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,12 +55,12 @@
                 <!-- Check if the product has a discount price -->
                 {% if product.discount_price %}
                 <!-- Display old price with strikethrough -->
-                <div class="old-price text-muted" style="text-decoration: line-through;">{{ product.price | format_price}} L.E</div>
+                <div class="old-price text-muted" style="text-decoration: line-through;">{{ product.price |  floatformat:1 | intcomma }} L.E</div>
                 <!-- Display discount price -->
-                <div id="discount-price{{product.id}}" class="discount-price">{{ product.discount_price | format_price}} L.E</div>
+                <div id="discount-price{{product.id}}" class="discount-price">{{ product.discount_price | floatformat:1 | intcomma }} L.E</div>
                 {% else %}
                 <!-- If no discount, display regular price -->
-                <div id="price{{product.id}}" class="card-text">{{ product.price | format_price }} L.E</div>
+                <div id="price{{product.id}}" class="card-text">{{ product.price | floatformat:1 | intcomma }} L.E</div>
                 {% endif %}
               </div>
             </div>
